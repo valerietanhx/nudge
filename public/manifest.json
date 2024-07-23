@@ -1,0 +1,10 @@
+{
+  "name": "Nudge",
+  "description": "A Google Chrome new tab extension that saves links, images, and other content for future processing.",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": ["storage"]
+}
