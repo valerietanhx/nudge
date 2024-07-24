@@ -1,3 +1,5 @@
+/// <reference types="chrome-types/index.d.ts"/>
+
 import { useState, ChangeEvent, FormEvent, DragEvent } from "react";
 import Card from "../Card/Card";
 import IconButton from "../IconButton/IconButton";
@@ -54,7 +56,10 @@ function InputCard() {
       alert("At least one field must be filled.");
       return;
     }
-    setFormData({ url: "", file: undefined, text: "" });
+    const key = Date.now();
+    chrome.storage.local.set({ [key]: formData }, () => {
+      setFormData({ url: "", file: undefined, text: "" });
+    });
   };
 
   // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
@@ -136,7 +141,6 @@ function InputCard() {
                 icon={faTrashCan}
                 onClick={() => {
                   resetFileInput();
-                  console.log("file deleted");
                 }}
               />
             </div>

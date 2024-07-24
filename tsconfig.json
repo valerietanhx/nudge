@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "types": ["chrome-types"]
+  },
   "files": [],
   "references": [
     {

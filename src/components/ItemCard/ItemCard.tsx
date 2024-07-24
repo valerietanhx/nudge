@@ -1,3 +1,5 @@
+/// <reference types="chrome-types/index.d.ts"/>
+
 import { useState, PropsWithChildren } from "react";
 import Card from "../Card/Card";
 import styles from "./itemCard.module.css";
@@ -9,10 +11,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 interface ItemCardProps {
-  date: Date;
+  timestamp: number;
 }
 
-function ItemCard({ date, children }: PropsWithChildren<ItemCardProps>) {
+function ItemCard({ timestamp, children }: PropsWithChildren<ItemCardProps>) {
   const [isDone, setIsDone] = useState<boolean>(false);
 
   const options: Intl.DateTimeFormatOptions = {
@@ -23,8 +25,9 @@ function ItemCard({ date, children }: PropsWithChildren<ItemCardProps>) {
   };
 
   const limit = 30;
+  const itemDate = new Date(timestamp);
   const currentDate = new Date();
-  const diffTime = Math.abs(currentDate.getTime() - date.getTime());
+  const diffTime = Math.abs(currentDate.getTime() - itemDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   const toggleDone = () => {
@@ -32,7 +35,7 @@ function ItemCard({ date, children }: PropsWithChildren<ItemCardProps>) {
   };
 
   const handleDelete = () => {
-    console.log("item deleted");
+    chrome.storage.local.remove(timestamp.toString());
   };
 
   return (
@@ -51,8 +54,8 @@ function ItemCard({ date, children }: PropsWithChildren<ItemCardProps>) {
       <hr></hr>
       <div className={styles.footer}>
         <div className={styles.metadata}>
-          Added {date.toLocaleDateString(navigator.language, options)}. Expires
-          in {limit - diffDays} days.
+          Added {itemDate.toLocaleDateString(navigator.language, options)}.
+          Expires in {limit - diffDays} days.
         </div>
         <div className={styles.buttons}>
           <IconButton icon={isDone ? faXmark : faCheck} onClick={toggleDone} />
