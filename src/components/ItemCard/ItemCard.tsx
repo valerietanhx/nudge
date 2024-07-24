@@ -24,10 +24,8 @@ function ItemCard({ timestamp, children }: PropsWithChildren<ItemCardProps>) {
     day: "numeric",
   };
 
-  const limit = 30;
-  const itemDate = new Date(timestamp);
-  const currentDate = new Date();
-  const diffTime = Math.abs(currentDate.getTime() - itemDate.getTime());
+  const limit = 30; // TODO: use context instead
+  const diffTime = Math.abs(Date.now() - timestamp);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   const toggleDone = () => {
@@ -54,7 +52,8 @@ function ItemCard({ timestamp, children }: PropsWithChildren<ItemCardProps>) {
       <hr></hr>
       <div className={styles.footer}>
         <div className={styles.metadata}>
-          Added {itemDate.toLocaleDateString(navigator.language, options)}.
+          Added{" "}
+          {new Date(timestamp).toLocaleDateString(navigator.language, options)}.
           Expires in {limit - diffDays} days.
         </div>
         <div className={styles.buttons}>
