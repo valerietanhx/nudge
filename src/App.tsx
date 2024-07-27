@@ -34,7 +34,10 @@ function App() {
       <InputCard />
       {items &&
         Object.entries(items).map(([timestamp, value]) => (
-          <ItemCard timestamp={parseInt(timestamp)}>
+          <ItemCard
+            timestamp={parseInt(timestamp)}
+            isCompleted={value.isCompleted}
+          >
             {/*
             TODO:
             - handle file, haven't managed to get it working

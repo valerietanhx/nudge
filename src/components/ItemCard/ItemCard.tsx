@@ -1,6 +1,6 @@
 /// <reference types="chrome-types/index.d.ts"/>
 
-import { useState, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import Card from "../Card/Card";
 import styles from "./itemCard.module.css";
 import IconButton from "../IconButton/IconButton";
@@ -12,11 +12,14 @@ import {
 
 interface ItemCardProps {
   timestamp: number;
+  isCompleted: boolean;
 }
 
-function ItemCard({ timestamp, children }: PropsWithChildren<ItemCardProps>) {
-  const [isDone, setIsDone] = useState<boolean>(false);
-
+function ItemCard({
+  timestamp,
+  isCompleted,
+  children,
+}: PropsWithChildren<ItemCardProps>) {
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
@@ -29,8 +32,13 @@ function ItemCard({ timestamp, children }: PropsWithChildren<ItemCardProps>) {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   const toggleDone = () => {
-    setIsDone(!isDone);
-    // TODO: save state in storage
+    chrome.storage.local.get(timestamp.toString(), (result) => {
+      if (result[timestamp.toString()]) {
+        const item = result[timestamp.toString()];
+        item.isCompleted = !item.isCompleted;
+        chrome.storage.local.set({ [timestamp.toString()]: item });
+      }
+    });
   };
 
   const handleDelete = () => {
@@ -40,7 +48,7 @@ function ItemCard({ timestamp, children }: PropsWithChildren<ItemCardProps>) {
   return (
     <Card
       status={
-        isDone
+        isCompleted
           ? "neutral"
           : diffDays <= 10
           ? "fresh"
@@ -58,7 +66,10 @@ function ItemCard({ timestamp, children }: PropsWithChildren<ItemCardProps>) {
           Expires in {limit - diffDays} days.
         </div>
         <div className={styles.buttons}>
-          <IconButton icon={isDone ? faXmark : faCheck} onClick={toggleDone} />
+          <IconButton
+            icon={isCompleted ? faXmark : faCheck}
+            onClick={toggleDone}
+          />
           <IconButton icon={faTrashCan} onClick={handleDelete} />
         </div>
       </div>

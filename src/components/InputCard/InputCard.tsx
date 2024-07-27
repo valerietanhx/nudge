@@ -13,6 +13,7 @@ function InputCard() {
     file: undefined,
     url: "",
     text: "",
+    isCompleted: false,
   });
   const [thumbnail, setThumbnail] = useState<string>();
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
@@ -52,9 +53,12 @@ function InputCard() {
       return;
     }
     const key = Date.now();
-    chrome.storage.local.set({ [key]: formData }, () => {
-      setFormData({ url: "", file: undefined, text: "" });
-    });
+    chrome.storage.local.set(
+      { [key]: { ...formData, isCompleted: false } },
+      () => {
+        setFormData({ url: "", file: undefined, text: "", isCompleted: false });
+      }
+    );
   };
 
   // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
