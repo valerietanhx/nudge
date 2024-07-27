@@ -1,6 +1,5 @@
 /// <reference types="chrome-types/index.d.ts"/>
 
-import { PropsWithChildren } from "react";
 import Card from "../Card/Card";
 import styles from "./itemCard.module.css";
 import IconButton from "../IconButton/IconButton";
@@ -9,17 +8,17 @@ import {
   faTrashCan,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { FormData } from "../../globals/types";
 
 interface ItemCardProps {
   timestamp: number;
-  isCompleted: boolean;
+  formData: FormData;
 }
 
-function ItemCard({
-  timestamp,
-  isCompleted,
-  children,
-}: PropsWithChildren<ItemCardProps>) {
+function ItemCard({ timestamp, formData }: ItemCardProps) {
+  const { file, url, text, isCompleted } = formData;
+  const key = timestamp.toString();
+
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
@@ -32,17 +31,17 @@ function ItemCard({
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   const toggleDone = () => {
-    chrome.storage.local.get(timestamp.toString(), (result) => {
-      if (result[timestamp.toString()]) {
-        const item = result[timestamp.toString()];
+    chrome.storage.local.get(key, (result) => {
+      if (result[key]) {
+        const item = result[key];
         item.isCompleted = !item.isCompleted;
-        chrome.storage.local.set({ [timestamp.toString()]: item });
+        chrome.storage.local.set({ [key]: item });
       }
     });
   };
 
   const handleDelete = () => {
-    chrome.storage.local.remove(timestamp.toString());
+    chrome.storage.local.remove(key);
   };
 
   return (
@@ -57,7 +56,18 @@ function ItemCard({
           : "aged"
       }
     >
-      <div className={styles.content}>{children}</div>
+      <div className={styles.content}>
+        {
+          // TODO
+          file && <div>Look, a file!</div>
+        }
+        {url && (
+          <a href={url} className={styles.wrap}>
+            {url}
+          </a>
+        )}
+        {text && <p className={styles.wrap}>{text}</p>}
+      </div>
       <hr></hr>
       <div className={styles.footer}>
         <div className={styles.metadata}>

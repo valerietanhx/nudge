@@ -34,21 +34,7 @@ function App() {
       <InputCard />
       {items &&
         Object.entries(items).map(([timestamp, value]) => (
-          <ItemCard
-            timestamp={parseInt(timestamp)}
-            isCompleted={value.isCompleted}
-          >
-            {/*
-            TODO:
-            - handle file, haven't managed to get it working
-            */}
-            {value.url && (
-              <a href={value.url} className="wrap">
-                {value.url}
-              </a>
-            )}
-            {value.text && <p className="wrap">{value.text}</p>}
-          </ItemCard>
+          <ItemCard timestamp={parseInt(timestamp)} formData={value} />
         ))}
     </main>
   );
