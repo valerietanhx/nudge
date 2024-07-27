@@ -24,12 +24,13 @@ function ItemCard({ timestamp, children }: PropsWithChildren<ItemCardProps>) {
     day: "numeric",
   };
 
-  const limit = 30; // TODO: use context instead
+  const limit = 30; // TODO: use context instead?
   const diffTime = Math.abs(Date.now() - timestamp);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   const toggleDone = () => {
     setIsDone(!isDone);
+    // TODO: save state in storage
   };
 
   const handleDelete = () => {

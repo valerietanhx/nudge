@@ -6,12 +6,7 @@ import IconButton from "../IconButton/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import styles from "./inputCard.module.css";
-
-interface FormData {
-  file?: File;
-  url: string;
-  text: string;
-}
+import { FormData } from "../../globals/types";
 
 function InputCard() {
   const [formData, setFormData] = useState<FormData>({

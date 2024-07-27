@@ -4,11 +4,12 @@ import "./App.css";
 import ItemCard from "./components/ItemCard/ItemCard";
 import InputCard from "./components/InputCard/InputCard";
 import { useState } from "react";
+import { FormData } from "./globals/types";
 
 function App() {
-  const [items, setItems] = useState<{ [timestamp: string]: any }>();
+  const [items, setItems] = useState<{ [timestamp: string]: FormData }>();
 
-  const limit = 30; // TODO: use context instead
+  const limit = 30; // TODO: use context instead?
   const millisecondsPerDay = 1000 * 60 * 60 * 24;
   const limitTimestamp = Date.now() - limit * millisecondsPerDay;
 
