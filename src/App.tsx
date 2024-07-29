@@ -4,10 +4,10 @@ import "./App.css";
 import ItemCard from "./components/ItemCard/ItemCard";
 import InputCard from "./components/InputCard/InputCard";
 import { useState } from "react";
-import { FormData } from "./globals/types";
+import { ItemData } from "./globals/types";
 
 function App() {
-  const [items, setItems] = useState<{ [timestamp: string]: FormData }>();
+  const [items, setItems] = useState<{ [timestamp: string]: ItemData }>();
 
   const limit = 30; // TODO: use context instead?
   const millisecondsPerDay = 1000 * 60 * 60 * 24;
@@ -34,7 +34,7 @@ function App() {
       <InputCard />
       {items &&
         Object.entries(items).map(([timestamp, value]) => (
-          <ItemCard timestamp={parseInt(timestamp)} formData={value} />
+          <ItemCard timestamp={parseInt(timestamp)} itemData={value} />
         ))}
     </main>
   );

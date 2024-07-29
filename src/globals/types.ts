@@ -1,4 +1,4 @@
-export interface FormData {
+export interface ItemData {
   file?: File;
   url: string;
   text: string;

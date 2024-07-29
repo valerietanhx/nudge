@@ -6,10 +6,10 @@ import IconButton from "../IconButton/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import styles from "./inputCard.module.css";
-import { FormData } from "../../globals/types";
+import { ItemData } from "../../globals/types";
 
 function InputCard() {
-  const [formData, setFormData] = useState<FormData>({
+  const [itemData, setItemData] = useState<ItemData>({
     file: undefined,
     url: "",
     text: "",
@@ -25,11 +25,11 @@ function InputCard() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setItemData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleFile = (file: File) => {
-    setFormData((prevData) => ({ ...prevData, file }));
+    setItemData((prevData) => ({ ...prevData, file }));
     const reader = new FileReader();
     reader.onload = () => setThumbnail(reader.result as string | undefined);
     reader.readAsDataURL(file);
@@ -43,7 +43,7 @@ function InputCard() {
   };
 
   const isFormValid = (): boolean => {
-    return !!(formData.url || formData.text || formData.file);
+    return !!(itemData.url || itemData.text || itemData.file);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -53,12 +53,9 @@ function InputCard() {
       return;
     }
     const key = Date.now();
-    chrome.storage.local.set(
-      { [key]: { ...formData, isCompleted: false } },
-      () => {
-        setFormData({ url: "", file: undefined, text: "", isCompleted: false });
-      }
-    );
+    chrome.storage.local.set({ [key]: itemData }, () => {
+      setItemData({ url: "", file: undefined, text: "", isCompleted: false });
+    });
   };
 
   // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
@@ -92,7 +89,7 @@ function InputCard() {
   };
 
   const resetFileInput = () => {
-    setFormData((prevData) => ({ ...prevData, file: undefined }));
+    setItemData((prevData) => ({ ...prevData, file: undefined }));
     setFileInputKey(Date.now());
   };
 
@@ -131,10 +128,10 @@ function InputCard() {
               : "Drag and drop a file, or click to browse"}
           </p>
         </div>
-        {formData.file && (
+        {itemData.file && (
           <div className={styles.file}>
             <img src={thumbnail} className={styles.thumbnail}></img>
-            <p className={styles.fileName}>{formData.file?.name}</p>
+            <p className={styles.fileName}>{itemData.file?.name}</p>
             <div className={styles.iconButtonWrapper}>
               <IconButton
                 icon={faTrashCan}
@@ -151,7 +148,7 @@ function InputCard() {
             id="url"
             type="url"
             name="url"
-            value={formData.url}
+            value={itemData.url}
             className={styles.block}
             onChange={handleChange}
             placeholder="https://example.com/"
@@ -163,7 +160,7 @@ function InputCard() {
             id="text"
             type="text"
             name="text"
-            value={formData.text}
+            value={itemData.text}
             className={styles.block}
             onChange={handleChange}
           ></input>

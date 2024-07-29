@@ -8,15 +8,15 @@ import {
   faTrashCan,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { FormData } from "../../globals/types";
+import { ItemData } from "../../globals/types";
 
 interface ItemCardProps {
   timestamp: number;
-  formData: FormData;
+  itemData: ItemData;
 }
 
-function ItemCard({ timestamp, formData }: ItemCardProps) {
-  const { file, url, text, isCompleted } = formData;
+function ItemCard({ timestamp, itemData }: ItemCardProps) {
+  const { file, url, text, isCompleted } = itemData;
   const key = timestamp.toString();
 
   const options: Intl.DateTimeFormatOptions = {
