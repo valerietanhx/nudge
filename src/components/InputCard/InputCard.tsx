@@ -58,26 +58,36 @@ function InputCard() {
     });
   };
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+  function handleDrop(e: DragEvent<HTMLDivElement>) {
     e.preventDefault();
-    if (e.dataTransfer.items) {
-      // if the browser supports DataTransferItemList interface,
-      // use DataTransferItemList interface to access the file(s)
-      [...e.dataTransfer.items].forEach((item) => {
-        if (item.kind === "file") {
-          const file = item.getAsFile()!;
-          handleFile(file);
-        }
-      });
-    } else {
-      // Use DataTransfer interface to access the file(s)
-      [...e.dataTransfer.files].forEach((file) => {
-        handleFile(file);
-      });
+
+    const items = e.dataTransfer.items;
+
+    if (items.length > 1) {
+      setIsDragOver(false);
+      return alert("Please drop only one file at a time.");
     }
-    setIsDragOver(false);
-  };
+    if (items.length === 0) return;
+
+    const item = items[0];
+    const entry = item.webkitGetAsEntry();
+
+    if (!entry) {
+      setIsDragOver(false);
+      return;
+    }
+
+    if (entry.isDirectory) {
+      setIsDragOver(false);
+      alert("Please only drop files, not directories.");
+    } else if (entry.isFile) {
+      const file = item.getAsFile();
+      if (file) {
+        handleFile(file);
+        setIsDragOver(false);
+      }
+    }
+  }
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -131,7 +141,7 @@ function InputCard() {
         {itemData.file && (
           <div className={styles.file}>
             <img src={thumbnail} className={styles.thumbnail}></img>
-            <p className={styles.fileName}>{itemData.file?.name}</p>
+            <p className={styles.fileName}>{itemData.file.name}</p>
             <div className={styles.iconButtonWrapper}>
               <IconButton
                 icon={faTrashCan}
