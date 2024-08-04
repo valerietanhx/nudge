@@ -4,3 +4,8 @@ export interface ItemData {
   text: string;
   isCompleted: boolean;
 }
+
+export interface SubmittedItemData {
+  timestamp: number;
+  itemData: ItemData;
+}

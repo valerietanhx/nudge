@@ -8,16 +8,35 @@ import {
   faTrashCan,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { ItemData } from "../../globals/types";
+import { ItemData, SubmittedItemData } from "../../globals/types";
+import { openDB } from "idb";
+import { DB_NAME, STORE_NAME } from "../../utils/db";
 
-interface ItemCardProps {
-  timestamp: number;
-  itemData: ItemData;
+const limit = 30; // TODO: use context instead?
+
+async function getItem(timestamp: number) {
+  const db = await openDB(DB_NAME, 1);
+  return db.get(STORE_NAME, timestamp);
 }
 
-function ItemCard({ timestamp, itemData }: ItemCardProps) {
+async function updateItem(timestamp: number, itemData: ItemData) {
+  const db = await openDB(DB_NAME, 1);
+  return db.put(STORE_NAME, { timestamp, ...itemData });
+}
+
+async function deleteItem(timestamp: number) {
+  const db = await openDB(DB_NAME, 1);
+  return db.delete(STORE_NAME, timestamp);
+}
+
+interface ItemCardProps {
+  submittedItemData: SubmittedItemData;
+  onDBChange: () => void;
+}
+
+function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
+  const { timestamp, itemData } = submittedItemData;
   const { file, url, text, isCompleted } = itemData;
-  const key = timestamp.toString();
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -26,22 +45,21 @@ function ItemCard({ timestamp, itemData }: ItemCardProps) {
     day: "numeric",
   };
 
-  const limit = 30; // TODO: use context instead?
   const diffTime = Math.abs(Date.now() - timestamp);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const toggleDone = () => {
-    chrome.storage.local.get(key, (result) => {
-      if (result[key]) {
-        const item = result[key];
-        item.isCompleted = !item.isCompleted;
-        chrome.storage.local.set({ [key]: item });
-      }
-    });
+  const toggleDone = async () => {
+    const item = await getItem(timestamp);
+    if (item) {
+      item.itemData.isCompleted = !item.itemData.isCompleted;
+      await updateItem(timestamp, item);
+      onDBChange();
+    }
   };
 
-  const handleDelete = () => {
-    chrome.storage.local.remove(key);
+  const handleDelete = async () => {
+    await deleteItem(timestamp);
+    onDBChange();
   };
 
   return (
@@ -57,10 +75,7 @@ function ItemCard({ timestamp, itemData }: ItemCardProps) {
       }
     >
       <div className={styles.content}>
-        {
-          // TODO
-          file && <div>Look, a file!</div>
-        }
+        {file && <div>Look, a file!</div>}
         {url && (
           <a href={url} className={styles.wrap}>
             {url}

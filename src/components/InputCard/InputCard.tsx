@@ -6,9 +6,14 @@ import IconButton from "../IconButton/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import styles from "./inputCard.module.css";
-import { ItemData } from "../../globals/types";
+import { ItemData, SubmittedItemData } from "../../globals/types";
+import { STORE_NAME, initDB } from "../../utils/db";
 
-function InputCard() {
+interface InputCardProps {
+  onDBChange: () => void;
+}
+
+function InputCard({ onDBChange }: InputCardProps) {
   const [itemData, setItemData] = useState<ItemData>({
     file: undefined,
     url: "",
@@ -46,19 +51,26 @@ function InputCard() {
     return !!(itemData.url || itemData.text || itemData.file);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isFormValid()) {
       alert("At least one field must be filled.");
       return;
     }
-    const key = Date.now();
-    chrome.storage.local.set({ [key]: itemData }, () => {
-      setItemData({ url: "", file: undefined, text: "", isCompleted: false });
-    });
+
+    const db = await initDB();
+    await db.add(STORE_NAME, {
+      timestamp: Date.now(),
+      itemData: itemData,
+    } as SubmittedItemData);
+    onDBChange();
+
+    setItemData({ url: "", file: undefined, text: "", isCompleted: false });
+    setThumbnail(undefined);
+    setFileInputKey(Date.now());
   };
 
-  function handleDrop(e: DragEvent<HTMLDivElement>) {
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
 
     const items = e.dataTransfer.items;
@@ -87,7 +99,7 @@ function InputCard() {
         setIsDragOver(false);
       }
     }
-  }
+  };
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
