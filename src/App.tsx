@@ -22,24 +22,18 @@ async function fetchItems() {
 function App() {
   const [items, setItems] = useState<SubmittedItemData[]>([]);
 
-  const handleDBChange = () => {
-    const getItems = async () => {
-      const itemsFromDB = await fetchItems();
-      setItems(itemsFromDB);
-    };
-
-    getItems();
+  const getItems = async () => {
+    const itemsFromDB = await fetchItems();
+    setItems(itemsFromDB);
   };
+
+  getItems();
 
   return (
     <main>
-      <InputCard onDBChange={handleDBChange} />
+      <InputCard onDBChange={getItems} />
       {items.map((item, index) => (
-        <ItemCard
-          key={index}
-          submittedItemData={item}
-          onDBChange={handleDBChange}
-        />
+        <ItemCard key={index} submittedItemData={item} onDBChange={getItems} />
       ))}
     </main>
   );

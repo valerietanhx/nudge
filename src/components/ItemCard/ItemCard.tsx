@@ -77,8 +77,22 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
     >
       <div className={styles.content}>
         {
-          // TODO: add open/download buttons
-          file && <FilePreview file={file} />
+          // TODO: add open button
+          file && (
+            <FilePreview file={file}>
+              <button
+                className={styles.downloadButton}
+                onClick={() =>
+                  chrome.downloads.download({
+                    url: URL.createObjectURL(file),
+                    filename: file.name,
+                  })
+                }
+              >
+                Download
+              </button>
+            </FilePreview>
+          )
         }
         {url && (
           <a href={url} className={styles.wrap}>
