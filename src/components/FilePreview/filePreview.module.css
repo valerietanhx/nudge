@@ -1,0 +1,21 @@
+.file {
+  width: 100%;
+  border-radius: 16px;
+  background-color: var(--medium-grey);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 20px;
+}
+
+.thumbnail {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.fileName {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

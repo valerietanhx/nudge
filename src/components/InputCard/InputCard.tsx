@@ -8,6 +8,7 @@ import { faUpload, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import styles from "./inputCard.module.css";
 import { ItemData, SubmittedItemData } from "../../globals/types";
 import { STORE_NAME, initDB } from "../../utils/db";
+import FilePreview from "../FilePreview/FilePreview";
 
 interface InputCardProps {
   onDBChange: () => void;
@@ -20,7 +21,6 @@ function InputCard({ onDBChange }: InputCardProps) {
     text: "",
     isCompleted: false,
   });
-  const [thumbnail, setThumbnail] = useState<string>();
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
   const [fileInputKey, setFileInputKey] = useState<number>(Date.now());
 
@@ -35,9 +35,6 @@ function InputCard({ onDBChange }: InputCardProps) {
 
   const handleFile = (file: File) => {
     setItemData((prevData) => ({ ...prevData, file }));
-    const reader = new FileReader();
-    reader.onload = () => setThumbnail(reader.result as string | undefined);
-    reader.readAsDataURL(file);
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +63,6 @@ function InputCard({ onDBChange }: InputCardProps) {
     onDBChange();
 
     setItemData({ url: "", file: undefined, text: "", isCompleted: false });
-    setThumbnail(undefined);
     setFileInputKey(Date.now());
   };
 
@@ -151,9 +147,7 @@ function InputCard({ onDBChange }: InputCardProps) {
           </p>
         </div>
         {itemData.file && (
-          <div className={styles.file}>
-            <img src={thumbnail} className={styles.thumbnail}></img>
-            <p className={styles.fileName}>{itemData.file.name}</p>
+          <FilePreview file={itemData.file}>
             <div className={styles.iconButtonWrapper}>
               <IconButton
                 icon={faTrashCan}
@@ -162,7 +156,7 @@ function InputCard({ onDBChange }: InputCardProps) {
                 }}
               />
             </div>
-          </div>
+          </FilePreview>
         )}
         <div>
           <label htmlFor="url">URL</label>

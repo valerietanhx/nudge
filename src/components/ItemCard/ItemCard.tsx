@@ -11,6 +11,7 @@ import {
 import { ItemData, SubmittedItemData } from "../../globals/types";
 import { openDB } from "idb";
 import { DB_NAME, STORE_NAME } from "../../utils/db";
+import FilePreview from "../FilePreview/FilePreview";
 
 const limit = 30; // TODO: use context instead?
 
@@ -75,7 +76,10 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
       }
     >
       <div className={styles.content}>
-        {file && <div>Look, a file!</div>}
+        {
+          // TODO: add open/download buttons
+          file && <FilePreview file={file} />
+        }
         {url && (
           <a href={url} className={styles.wrap}>
             {url}
