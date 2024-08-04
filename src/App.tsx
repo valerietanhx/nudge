@@ -13,10 +13,20 @@ const limitTimestamp = Date.now() - limit * millisecondsPerDay;
 
 async function fetchItems() {
   const db = await initDB();
-  const tx = db.transaction(STORE_NAME, "readonly");
+  const tx = db.transaction(STORE_NAME, "readwrite");
   const store = tx.objectStore(STORE_NAME);
   const items = await store.getAll();
-  return items.filter((item) => item.timestamp > limitTimestamp);
+
+  const itemsToKeep = items.filter((item) => item.timestamp > limitTimestamp);
+
+  const itemsToDelete = items.filter(
+    (item) => item.timestamp <= limitTimestamp
+  );
+  for (const item of itemsToDelete) {
+    store.delete(item.timestamp);
+  }
+
+  return itemsToKeep;
 }
 
 function App() {
