@@ -1,5 +1,3 @@
-/// <reference types="chrome-types/index.d.ts"/>
-
 import "./App.css";
 import { useState } from "react";
 import ItemCard from "./components/ItemCard/ItemCard";

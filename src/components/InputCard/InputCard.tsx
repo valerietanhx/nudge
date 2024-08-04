@@ -1,5 +1,3 @@
-/// <reference types="chrome-types/index.d.ts"/>
-
 import { useState, ChangeEvent, FormEvent, DragEvent } from "react";
 import Card from "../Card/Card";
 import IconButton from "../IconButton/IconButton";
