@@ -5,7 +5,9 @@ import styles from "./itemCard.module.css";
 import IconButton from "../IconButton/IconButton";
 import {
   faCheck,
+  faDownload,
   faTrashCan,
+  faUpRightFromSquare,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { ItemData, SubmittedItemData } from "../../globals/types";
@@ -38,6 +40,12 @@ interface ItemCardProps {
 function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
   const { timestamp, itemData } = submittedItemData;
   const { file, url, text, isCompleted } = itemData;
+
+  let fileUrl: string;
+
+  if (file) {
+    fileUrl = URL.createObjectURL(file);
+  }
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
@@ -76,24 +84,23 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
       }
     >
       <div className={styles.content}>
-        {
-          // TODO: add open button
-          file && (
-            <FilePreview file={file}>
-              <button
-                className={styles.downloadButton}
-                onClick={() =>
-                  chrome.downloads.download({
-                    url: URL.createObjectURL(file),
-                    filename: file.name,
-                  })
-                }
-              >
-                Download
-              </button>
-            </FilePreview>
-          )
-        }
+        {file && (
+          <FilePreview file={file}>
+            <IconButton
+              icon={faUpRightFromSquare}
+              onClick={() => window.open(fileUrl)}
+            />
+            <IconButton
+              icon={faDownload}
+              onClick={() =>
+                chrome.downloads.download({
+                  url: fileUrl,
+                  filename: file.name,
+                })
+              }
+            />
+          </FilePreview>
+        )}
         {url && (
           <a href={url} className={styles.wrap}>
             {url}
