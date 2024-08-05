@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ItemCard from "./components/ItemCard/ItemCard";
 import InputCard from "./components/InputCard/InputCard";
 import { SubmittedItemData } from "./globals/types";
@@ -36,7 +36,9 @@ function App() {
     setItems(itemsFromDB);
   };
 
-  getItems();
+  useEffect(() => {
+    getItems();
+  }, []);
 
   return (
     <main>
