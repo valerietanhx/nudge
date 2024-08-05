@@ -149,6 +149,7 @@ function InputCard({ onDBChange }: InputCardProps) {
             <div className={styles.iconButtonWrapper}>
               <IconButton
                 icon={faTrashCan}
+                color="var(--light-grey)"
                 onClick={() => {
                   resetFileInput();
                 }}

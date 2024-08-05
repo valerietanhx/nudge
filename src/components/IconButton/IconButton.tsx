@@ -4,12 +4,21 @@ import styles from "./iconButton.module.css";
 
 interface IconButtonProps {
   icon: IconProp;
+  color?: string;
   onClick: () => void;
 }
 
-function IconButton({ icon, onClick }: IconButtonProps) {
+function IconButton({
+  icon,
+  color = "var(--medium-grey)",
+  onClick,
+}: IconButtonProps) {
   return (
-    <button className={styles.button} onClick={onClick}>
+    <button
+      className={styles.button}
+      style={{ backgroundColor: color }}
+      onClick={onClick}
+    >
       <FontAwesomeIcon icon={icon} className={styles.icon} />
     </button>
   );

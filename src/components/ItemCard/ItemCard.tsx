@@ -88,10 +88,12 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
           <FilePreview file={file}>
             <IconButton
               icon={faUpRightFromSquare}
+              color="var(--light-grey)"
               onClick={() => window.open(fileUrl)}
             />
             <IconButton
               icon={faDownload}
+              color="var(--light-grey)"
               onClick={() =>
                 chrome.downloads.download({
                   url: fileUrl,
