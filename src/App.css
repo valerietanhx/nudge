@@ -11,12 +11,6 @@ hr {
   border-radius: 100px;
 }
 
-main {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 32px;
-}
-
 button {
   cursor: pointer;
   border: none;
@@ -27,25 +21,9 @@ button:hover {
   filter: brightness(0.9);
 }
 
-@media (max-width: 1200px) {
-  main {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 850px) {
-  main {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 675px) {
   #root {
     padding: 32px;
-  }
-  main {
-    grid-template-columns: repeat(1, 1fr);
-    grid-gap: 16px;
   }
 }
 
