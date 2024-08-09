@@ -26,7 +26,9 @@ function InputCard({ onDBChange }: InputCardProps) {
     document.getElementById("file")?.click();
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setItemData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -171,14 +173,13 @@ function InputCard({ onDBChange }: InputCardProps) {
         </div>
         <div>
           <label htmlFor="text">Note</label>
-          <input
+          <textarea
             id="text"
-            type="text"
             name="text"
             value={itemData.text}
             className={styles.block}
             onChange={handleChange}
-          ></input>
+          ></textarea>
         </div>
         <button type="submit" className={styles.saveButton}>
           Save

@@ -24,3 +24,8 @@
 .wrap {
   word-wrap: break-word;
 }
+
+.url:link,
+.url:visited {
+  color: blue;
+}

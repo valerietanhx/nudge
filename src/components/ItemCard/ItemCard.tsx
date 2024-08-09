@@ -48,10 +48,11 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
   }
 
   const options: Intl.DateTimeFormatOptions = {
-    weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   };
 
   const diffTime = Math.abs(Date.now() - timestamp);
@@ -104,7 +105,7 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
           </FilePreview>
         )}
         {url && (
-          <a href={url} className={styles.wrap}>
+          <a href={url} className={`${styles.wrap} ${styles.url}`}>
             {url}
           </a>
         )}
