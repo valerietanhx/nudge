@@ -5,10 +5,9 @@ import InputCard from "./components/InputCard/InputCard";
 import { SubmittedItemData } from "./globals/types";
 import { STORE_NAME, initDB } from "./utils/db";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { LIMIT, MILLISECONDS_PER_DAY } from "./globals/constants";
 
-const limit = 30; // TODO: use context instead?
-const millisecondsPerDay = 1000 * 60 * 60 * 24;
-const limitTimestamp = Date.now() - limit * millisecondsPerDay;
+const limitTimestamp = Date.now() - LIMIT * MILLISECONDS_PER_DAY;
 
 async function fetchItems() {
   const db = await initDB();

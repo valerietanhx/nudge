@@ -14,8 +14,7 @@ import { ItemData, SubmittedItemData } from "../../globals/types";
 import { openDB } from "idb";
 import { DB_NAME, STORE_NAME } from "../../utils/db";
 import FilePreview from "../FilePreview/FilePreview";
-
-const limit = 30; // TODO: use context instead?
+import { LIMIT, MILLISECONDS_PER_DAY } from "../../globals/constants";
 
 async function getItem(timestamp: number) {
   const db = await openDB(DB_NAME, 1);
@@ -56,7 +55,7 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
   };
 
   const diffTime = Math.abs(Date.now() - timestamp);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.ceil(diffTime / MILLISECONDS_PER_DAY);
 
   const toggleDone = async () => {
     const item = await getItem(timestamp);
@@ -116,7 +115,7 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
         <div className={styles.metadata}>
           Added{" "}
           {new Date(timestamp).toLocaleDateString(navigator.language, options)}.
-          Expires in {limit - diffDays} days.
+          Expires in {LIMIT - diffDays} days.
         </div>
         <div className={styles.buttons}>
           <IconButton
