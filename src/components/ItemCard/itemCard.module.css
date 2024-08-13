@@ -23,6 +23,7 @@
 
 .wrap {
   word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .url:link,
