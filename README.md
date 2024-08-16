@@ -14,7 +14,7 @@ Nudge is written using Vite + React in Typescript. It stores all your data clien
 
 I save things I want to take a look at later in lots of places: Twitter bookmarks, Reddit saved posts, sending them to myself on Telegram... but my bookmarks are not in-your-face enough, so I never actually look at them again, and all the cool interesting things I wanted to check out end up rotting away in the depths of my Telegram Saved Messages chat.
 
-Nudge was created to stop myself from endlessly collecting things and never actually looking at them. It does two things (1) makes my bookmarks easier to access and (2) brings in an element of pressure to force me to clear them.
+Nudge was created to stop myself from endlessly collecting things and never actually looking at them. It does two things: (1) makes my bookmarks easier to access and (2) brings in an element of pressure to force me to clear them.
 
 (1) is accomplished by Nudge being a a new tab extension, so all your bookmarks appear whenever you open a new tab. (I personally have a problem where I open new tabs unthinkingly even if I don't need them just out of sheer boredom, so hijacking that behaviour to force me to confront everything I said I would read.) (2) is accomplished by saved items being automatically removed after 30 days. The colour of the card changes every ten days as well as a sort of visual countdown, so you are faced with the fact that time is running out and that you have neglected your saved items for a terribly long amount of time.
 
