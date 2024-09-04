@@ -56,6 +56,7 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
 
   const diffTime = Math.abs(Date.now() - timestamp);
   const diffDays = Math.ceil(diffTime / MILLISECONDS_PER_DAY);
+  const daysLeft = LIMIT - diffDays;
 
   const toggleDone = async () => {
     const item = await getItem(timestamp);
@@ -115,7 +116,7 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
         <div className={styles.metadata}>
           Added{" "}
           {new Date(timestamp).toLocaleDateString(navigator.language, options)}.
-          Expires in {LIMIT - diffDays} days.
+          Expires in {daysLeft} {daysLeft == 1 ? "day" : "days"}.
         </div>
         <div className={styles.buttons}>
           <IconButton
