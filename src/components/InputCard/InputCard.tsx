@@ -120,16 +120,14 @@ function InputCard({ onDBChange }: InputCardProps) {
         id="form"
         className={styles.form}
       >
-        <div>
-          <input
-            id="file"
-            type="file"
-            name="file"
-            className={styles.hide}
-            onChange={handleFileChange}
-            key={fileInputKey}
-          ></input>
-        </div>
+        <input
+          id="file"
+          type="file"
+          name="file"
+          className={styles.hide}
+          onChange={handleFileChange}
+          key={fileInputKey}
+        ></input>
         <div
           className={`${styles.fileUpload} ${
             isDragOver ? styles.dragOver : ""
