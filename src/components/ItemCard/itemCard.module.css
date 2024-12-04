@@ -28,5 +28,9 @@
 
 .url:link,
 .url:visited {
-  color: blue;
+  color: #3a62d9;
+}
+
+.url:hover {
+  filter: brightness(0.8);
 }
