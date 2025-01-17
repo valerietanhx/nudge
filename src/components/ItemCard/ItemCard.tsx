@@ -87,6 +87,7 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
       <div className={styles.content}>
         {file && (
           <FilePreview file={file}>
+            <div className={styles.filePreviewButtons}>
             <IconButton
               icon={faUpRightFromSquare}
               color="var(--light-grey)"
@@ -102,6 +103,7 @@ function ItemCard({ submittedItemData, onDBChange }: ItemCardProps) {
                 })
               }
             />
+            </div>
           </FilePreview>
         )}
         {url && (

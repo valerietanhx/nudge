@@ -34,3 +34,9 @@
 .url:hover {
   filter: brightness(0.8);
 }
+
+.filePreviewButtons {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
